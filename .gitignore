@@ -1,0 +1,10 @@
+
+cmake-build-debug/
+
+cmake-build-release/
+
+results/
+
+.DS_Store
+
+output/
