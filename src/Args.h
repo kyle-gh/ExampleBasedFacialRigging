@@ -23,30 +23,29 @@ struct Args {
     std::string debugPath;
 
     bool read(int argc, char *argv[]) {
-        cxxopts::Options options("ebfr", "Transfer deformation from one mesh to another");
+        cxxopts::Options options("ebfr", "Generate a facial blendshape rig from example poses");
 
         options.add_options()
-                ("source-blendshapes", "Path to the source reference mesh", cxxopts::value<std::string>())
-                ("source-poses", "Path to the source reference mesh", cxxopts::value<std::string>())
-                ("source-weights", "Path to the source reference mesh", cxxopts::value<std::string>())
+                ("source-blendshapes", "Path to the directory containing the source blendshape", cxxopts::value<std::string>())
+                ("source-poses", "Path to the directory containing the source pose mesh files", cxxopts::value<std::string>())
+                ("source-weights", "Path to the source pose-weights file", cxxopts::value<std::string>())
 
-                ("target-neutral", "Path to the source reference mesh", cxxopts::value<std::string>())
-                ("target-poses", "Path to the source reference mesh", cxxopts::value<std::string>())
-                ("target-weights", "Path to the source reference mesh", cxxopts::value<std::string>())
+                ("target-neutral", "Path to the target neutral mesh file", cxxopts::value<std::string>())
+                ("target-poses", "Path to the directory containing the target pose mesh files", cxxopts::value<std::string>())
+                ("target-weights", "Path to the target (estimated) pose-weights file", cxxopts::value<std::string>())
 
-                ("vertex-mask", "Path to the source reference mesh", cxxopts::value<std::string>())
+                ("vertex-mask", "Path to the vertex mask file", cxxopts::value<std::string>())
 
-                ("output", "Path to save the deformed target mesh to", cxxopts::value<std::string>())
-                ("debug", "Path to save the deformed target mesh to", cxxopts::value<std::string>());
+                ("output", "Path to a directory to write the final target blendshapes", cxxopts::value<std::string>())
+                ("debug", "Path to a directory to save in-progress data (meshes, weights, etc.", cxxopts::value<std::string>());
 
         try {
             auto result = options.parse(argc, argv);
 
-            if (!result.count("source-blendshapes") || !result.count("source-poses") ||
-                !result.count("source-weights") ||
+            if (!result.count("source-blendshapes") || !result.count("source-poses") || !result.count("source-weights") ||
                 !result.count("target-neutral") || !result.count("target-poses") || !result.count("target-weights") ||
                 !result.count("output")
-                    ) {
+                ) {
                 std::cout << options.help() << std::endl;
                 exit(1);
             }
